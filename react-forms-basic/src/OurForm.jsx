@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function OurForm(){
 const [name, setName] = useState('');
@@ -9,10 +9,34 @@ const [phoneType, setPhoneType] = useState()
 const [bio, setBio] = useState('');
 // const [signUp, setSignUp] = useState();
 const [validation, setValidation] = useState({})
+
+useEffect(() => {
+	const errors = {};
+	if (!name.length) errors['name']='Please enter your Name';
+	if (!email.includes('@')) errors['email']='Please provide a valid Email';
+	if (phone.length < 9 || typeof phone !== Number) errors['phone'] = 'Please provide a valid phone number';
+	if (!phoneType) errors['phoneType'] = "Please select a phone type";
+	if (!bio || bio.length > 280) errors["bio"] = "Bio must be between 1 and 280 characters";
+
+	setValidation(errors);
+}, [name, email, phone, phoneType, bio])
+
+const onSubmit = e => {
+	e.preventDefault();
+	if (Object.values(validation).length)
+		return alert(`The following errors were found:
+
+	${validation.name ? "* " + validation.name : ""}
+	${validation.email ? "* " + validation.email : ""}
+	${validation.phone ? "* " + validation.phone : ""}
+	${validation.phoneType ? "* " + validation.phoneType : ""}
+	${validation.bio ? "* " + validation.bio : ""}`);
+}
+
 return (
 <div>
 	<h2>Our Form</h2>
-	<form>
+	<form onSubmit={onSubmit}>
 		<div>
 			<label htmlFor='name'>Name:</label>
 			<input id='name'
