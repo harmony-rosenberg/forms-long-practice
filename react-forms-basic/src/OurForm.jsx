@@ -53,7 +53,9 @@ return (
 		</div>
 		<div>
 			<label htmlFor='phone'>Phone:</label>
-			<input id='phone'
+			<input
+			placeholder="xxx-xxx-xxxx"
+			id='phone'
 			type='text'
 			onChange={e => setPhone(e.target.value)}
 			value={phone} />
